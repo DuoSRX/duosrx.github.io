@@ -1,0 +1,39 @@
+body {
+  margin: 20px 20px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: #FBFFFA;
+}
+
+.main {
+  min-width: 300px;
+  max-width: 600px;
+  margin: auto;
+}
+
+a {
+  text-decoration: none;
+  color: #599C6C;
+}
+
+a:visited {
+  color: #86A08D;
+}
+
+li {
+  margin-bottom: 5px;
+}
+
+h1, h2, h3 {
+  font-weight: 400;
+  line-height: 28pt;
+}
+
+h1 {
+  font-size: 24pt;
+}
+
+
+h2 {
+  font-size: 20pt;
+  margin-top: 40px;
+}
