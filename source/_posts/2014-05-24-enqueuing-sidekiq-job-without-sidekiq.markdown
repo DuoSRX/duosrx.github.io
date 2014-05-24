@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Enqueue Sidekiq jobs without Sidekiq"
-date: 2014-05-24 22:21:38 +0200
+title: "Enqueuing Sidekiq jobs without Sidekiq"
+date: 2014-05-25 14:00:00 +0200
 comments: true
 categories:
 ---
