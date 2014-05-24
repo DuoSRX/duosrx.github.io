@@ -4,7 +4,7 @@
   <title><![CDATA[Xavier Perez]]></title>
   <link href="http://DuoSRX.github.io/atom.xml" rel="self"/>
   <link href="http://DuoSRX.github.io/"/>
-  <updated>2014-05-25T01:03:33+02:00</updated>
+  <updated>2014-05-25T01:30:51+02:00</updated>
   <id>http://DuoSRX.github.io/</id>
   <author>
     <name><![CDATA[Xavier Perez]]></name>
@@ -14,10 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Enqueue Sidekiq Jobs Without Sidekiq]]></title>
-    <link href="http://DuoSRX.github.io/blog/2014/05/24/enqueue-sidekiq-job-without-sidekiq/"/>
-    <updated>2014-05-24T22:21:38+02:00</updated>
-    <id>http://DuoSRX.github.io/blog/2014/05/24/enqueue-sidekiq-job-without-sidekiq</id>
+    <title type="html"><![CDATA[Enqueuing Sidekiq Jobs Without Sidekiq]]></title>
+    <link href="http://DuoSRX.github.io/blog/2014/05/25/enqueuing-sidekiq-job-without-sidekiq/"/>
+    <updated>2014-05-25T14:00:00+02:00</updated>
+    <id>http://DuoSRX.github.io/blog/2014/05/25/enqueuing-sidekiq-job-without-sidekiq</id>
     <content type="html"><![CDATA[<p>Let&rsquo;s say you have a running Sidekiq system and for whatever reason you need to enqueue
 jobs from another not ruby-based environment or system. It&rsquo;s actually quite simple as you
 can directly push your jobs into Redis without the Sidekiq gem.</p>
