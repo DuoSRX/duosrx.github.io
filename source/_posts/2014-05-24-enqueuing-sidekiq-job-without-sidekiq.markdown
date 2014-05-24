@@ -88,7 +88,9 @@ redis 127.0.0.1:6379> zscore "schedule" "{\"retry\":true,\"queue\":\"default\",\
   "1400959928.9367521"
 ```
 
-The score is actually the time at which the job is supposed to be executed! This allow Sidekiq to use `ZRANGEBYSCORE` to simply pop the jobs that should be executed. Now if you want to enqueue a scheduled job, you just have to add it to the `schedule` sorted set using `ZADD`!
+The score is actually the time at which the job is supposed to be executed! This allow Sidekiq to use `ZRANGEBYSCORE` to simply pop the jobs that should be executed [^1]. Now if you want to enqueue a scheduled job, you just have to add it to the `schedule` sorted set using `ZADD`!
+
+[^1]: [Here's where the magic happens in the Sidekiq code](https://github.com/mperham/sidekiq/blob/master/lib/sidekiq/scheduled.rb#L35)
 
 And really, that's all there is to it! As long as you know the class name of the worker and the arguments it take, you can enqueue jobs from any programming language. Or even directly inside Redis if you wish so!
 
