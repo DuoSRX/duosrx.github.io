@@ -25,7 +25,7 @@ HardWorker.perform_async("foo")
 # => "d34299988658f23c62c178da"
 ```
 
-Sidekiq give us back a unique ID for that job. Let's have a look inside Redis:
+Sidekiq gives us back a unique ID for that specific job. Let's have a look inside Redis:
 
 ```
 redis 127.0.0.1:6379> type "queues"
@@ -38,7 +38,7 @@ redis 127.0.0.1:6379> smembers queues
 1) "default"
 ```
 
-Now for simple jobs (as opposed to scheduled jobs), Sidekiq use two different keys: a list and a set. The set called `queues` by default only store the queues names. The list named `queue:nameofthequeue` actually store the job informations.  Let's have a closer look:
+Now for simple jobs (as opposed to *scheduled* jobs), Sidekiq use two different keys: a list and a set. The set called `queues` by default only store the queues names. The list named `queue:nameofthequeue` actually store the job informations.  Let's have a closer look:
 
 ```
 redis 127.0.0.1:6379> LRANGE queue:default 0 1
@@ -47,19 +47,19 @@ redis 127.0.0.1:6379> LRANGE queue:default 0 1
 
 A-Ha! So a job is simply a hash serialized in JSON. Those are the required keys:
 
-* retry (boolean): tells Sidekiq whether to retry or not a failed job
-* queue (string): self-explanatory!
-* class (string): the class of the worker that will be instantiated by Sidekiq
-* args (array): the arguments that will passed to the worker contructor
-* jid (string): the unique ID of the job
-* enqueued_at (float): the exact time the job was enqueued
+* `retry` (boolean): tells Sidekiq whether to retry or not a failed job
+* `queue` (string): self-explanatory!
+* `class` (string): the class of the worker that will be instantiated by Sidekiq
+* `args` (array): the arguments that will passed to the worker's contructor
+* `jid` (string): the unique ID of the job
+* `enqueued_at` (float): the timestamp when the job was enqueued
 
 Pretty simple, huh? So, to enqueue a job yourself you have to:
 
 * Generate a unique ID.
-* Serialize your payload using JSON.
+* Serialize the payload using JSON.
 * Add the name of the queue to the `queues` set (using `SADD`).
-* Add the payload the `queue:myqueue` list (using `LPUSH`).
+* Push the payload to the `queue:myqueue` list (using `LPUSH`).
 
 Pretty simple, eh? Now you might be wondering, what about scheduled job? Well it's not that much more complicated! First let's push a scheduled job:
 
@@ -81,14 +81,14 @@ redis 127.0.0.1:6379> zrange schedule 0 1
 1) "{\"retry\":true,\"queue\":\"default\",\"class\":\"HardWorker\",\"args\":[\"foo\"],\"jid\":\"672512fcf9ba85078d73bd77\",\"enqueued_at\":1400959918.936842}"
 ```
 
-At first sight, there's not much difference besides the fact that the job is stored in a sorted set (`zset`) instead of a list. But if it's in a sorted set then what's its score?
+At first sight, there's not much difference besides the fact that the job is stored in a sorted set (`zset`) instead of a list. But it's in a sorted set, that means it must have score:
 
 ```
 redis 127.0.0.1:6379> zscore "schedule" "{\"retry\":true,\"queue\":\"default\",\"class\":\"HardWorker
   "1400959928.9367521"
 ```
 
-The score is actually the time at which the job is supposed to be executed! So now whenever you want to enqueue a scheduled job, you just have to add it to the `schedule` sorted set using `zadd`!
+The score is actually the time at which the job is supposed to be executed! This allow Sidekiq to use `ZRANGEBYSCORE` to simply pop the jobs that should be executed. Now if you want to enqueue a scheduled job, you just have to add it to the `schedule` sorted set using `ZADD`!
 
 And really, that's all there is to it! As long as you know the class name of the worker and the arguments it take, you can enqueue jobs from any programming language. Or even directly inside Redis if you wish so!
 
