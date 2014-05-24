@@ -140,7 +140,7 @@ can directly push your jobs into Redis without the Sidekiq gem.</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Sidekiq give us back a unique ID for that job. Let&rsquo;s have a look inside Redis:</p>
+<p>Sidekiq gives us back a unique ID for that specific job. Let&rsquo;s have a look inside Redis:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -161,7 +161,7 @@ can directly push your jobs into Redis without the Sidekiq gem.</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Now for simple jobs (as opposed to scheduled jobs), Sidekiq use two different keys: a list and a set. The set called <code>queues</code> by default only store the queues names. The list named <code>queue:nameofthequeue</code> actually store the job informations.  Let&rsquo;s have a closer look:</p>
+<p>Now for simple jobs (as opposed to <em>scheduled</em> jobs), Sidekiq use two different keys: a list and a set. The set called <code>queues</code> by default only store the queues names. The list named <code>queue:nameofthequeue</code> actually store the job informations.  Let&rsquo;s have a closer look:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -173,12 +173,12 @@ can directly push your jobs into Redis without the Sidekiq gem.</p>
 <p>A-Ha! So a job is simply a hash serialized in JSON. Those are the required keys:</p>
 
 <ul>
-<li>retry (boolean): tells Sidekiq whether to retry or not a failed job</li>
-<li>queue (string): self-explanatory!</li>
-<li>class (string): the class of the worker that will be instantiated by Sidekiq</li>
-<li>args (array): the arguments that will passed to the worker contructor</li>
-<li>jid (string): the unique ID of the job</li>
-<li>enqueued_at (float): the exact time the job was enqueued</li>
+<li><code>retry</code> (boolean): tells Sidekiq whether to retry or not a failed job</li>
+<li><code>queue</code> (string): self-explanatory!</li>
+<li><code>class</code> (string): the class of the worker that will be instantiated by Sidekiq</li>
+<li><code>args</code> (array): the arguments that will passed to the worker&rsquo;s contructor</li>
+<li><code>jid</code> (string): the unique ID of the job</li>
+<li><code>enqueued_at</code> (float): the timestamp when the job was enqueued</li>
 </ul>
 
 
@@ -186,9 +186,9 @@ can directly push your jobs into Redis without the Sidekiq gem.</p>
 
 <ul>
 <li>Generate a unique ID.</li>
-<li>Serialize your payload using JSON.</li>
+<li>Serialize the payload using JSON.</li>
 <li>Add the name of the queue to the <code>queues</code> set (using <code>SADD</code>).</li>
-<li>Add the payload the <code>queue:myqueue</code> list (using <code>LPUSH</code>).</li>
+<li>Push the payload to the <code>queue:myqueue</code> list (using <code>LPUSH</code>).</li>
 </ul>
 
 
@@ -222,7 +222,7 @@ can directly push your jobs into Redis without the Sidekiq gem.</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>At first sight, there&rsquo;s not much difference besides the fact that the job is stored in a sorted set (<code>zset</code>) instead of a list. But if it&rsquo;s in a sorted set then what&rsquo;s its score?</p>
+<p>At first sight, there&rsquo;s not much difference besides the fact that the job is stored in a sorted set (<code>zset</code>) instead of a list. But it&rsquo;s in a sorted set, that means it must have score:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -231,7 +231,7 @@ can directly push your jobs into Redis without the Sidekiq gem.</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The score is actually the time at which the job is supposed to be executed! So now whenever you want to enqueue a scheduled job, you just have to add it to the <code>schedule</code> sorted set using <code>zadd</code>!</p>
+<p>The score is actually the time at which the job is supposed to be executed! This allow Sidekiq to use <code>ZRANGEBYSCORE</code> to simply pop the jobs that should be executed <sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>. Now if you want to enqueue a scheduled job, you just have to add it to the <code>schedule</code> sorted set using <code>ZADD</code>!</p>
 
 <p>And really, that&rsquo;s all there is to it! As long as you know the class name of the worker and the arguments it take, you can enqueue jobs from any programming language. Or even directly inside Redis if you wish so!</p>
 
@@ -358,6 +358,14 @@ can directly push your jobs into Redis without the Sidekiq gem.</p>
 </span><span class='line'>  <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">job</span><span class="p">.</span><span class="nx">Enqueue</span><span class="p">())</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
+
+<div class="footnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p><a href="https://github.com/mperham/sidekiq/blob/master/lib/sidekiq/scheduled.rb#L35">Here&rsquo;s where the magic happens in the Sidekiq code</a><a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+</ol>
+</div>
 
 </div>
   
