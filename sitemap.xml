@@ -1,23 +1,23 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://DuoSRX.github.io/blog/2014/05/25/enqueuing-sidekiq-job-without-sidekiq/</loc>
+        <loc>http://xavier-perez.com/blog/2014/05/25/enqueuing-sidekiq-job-without-sidekiq/</loc>
         <lastmod>2014-05-25T02:05:09+02:00</lastmod>
     </url>
     <url>
-        <loc>http://DuoSRX.github.io/about/</loc>
+        <loc>http://xavier-perez.com/about/</loc>
         <lastmod>2014-05-24T22:55:49+02:00</lastmod>
     </url>
     <url>
-        <loc>http://DuoSRX.github.io/blog/archives/</loc>
+        <loc>http://xavier-perez.com/blog/archives/</loc>
         <lastmod>2014-05-25T02:05:09+02:00</lastmod>
     </url>
     <url>
-        <loc>http://DuoSRX.github.io/</loc>
+        <loc>http://xavier-perez.com/</loc>
         <lastmod>2014-05-25T02:05:09+02:00</lastmod>
     </url>
     <url>
-        <loc>http://DuoSRX.github.io/robots.txt</loc>
+        <loc>http://xavier-perez.com/robots.txt</loc>
         <lastmod>2014-05-24T21:47:15+02:00</lastmod>
     </url>
 </urlset>
