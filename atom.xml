@@ -4,7 +4,7 @@
   <title><![CDATA[Xavier Perez]]></title>
   <link href="http://DuoSRX.github.io/atom.xml" rel="self"/>
   <link href="http://DuoSRX.github.io/"/>
-  <updated>2014-05-25T01:45:02+02:00</updated>
+  <updated>2014-05-25T02:05:09+02:00</updated>
   <id>http://DuoSRX.github.io/</id>
   <author>
     <name><![CDATA[Xavier Perez]]></name>
@@ -140,7 +140,7 @@ can directly push your jobs into Redis without the Sidekiq gem.</p>
 
 <p>The score is actually the time at which the job is supposed to be executed! This allow Sidekiq to use <code>ZRANGEBYSCORE</code> to simply pop the jobs that should be executed <sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>. Now if you want to enqueue a scheduled job, you just have to add it to the <code>schedule</code> sorted set using <code>ZADD</code>!</p>
 
-<p>And really, that&rsquo;s all there is to it! As long as you know the class name of the worker and the arguments it take, you can enqueue jobs from any programming language. Or even directly inside Redis if you wish so!</p>
+<p>And really, that&rsquo;s all there is to it! As long as you know the worker&rsquo;s class name and the arguments it takes, you can enqueue jobs from any programming language. Or even directly inside Redis if you wish so!</p>
 
 <p>For the sake of completion, here&rsquo;s a naive implementation in Go:</p>
 
