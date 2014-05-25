@@ -92,7 +92,7 @@ The score is actually the time at which the job is supposed to be executed! This
 
 [^1]: [Here's where the magic happens in the Sidekiq code](https://github.com/mperham/sidekiq/blob/master/lib/sidekiq/scheduled.rb#L35)
 
-And really, that's all there is to it! As long as you know the class name of the worker and the arguments it take, you can enqueue jobs from any programming language. Or even directly inside Redis if you wish so!
+And really, that's all there is to it! As long as you know the worker's class name and the arguments it takes, you can enqueue jobs from any programming language. Or even directly inside Redis if you wish so!
 
 For the sake of completion, here's a naive implementation in Go:
 
