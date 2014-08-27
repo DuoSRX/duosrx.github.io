@@ -9,9 +9,7 @@ footer: true
 
 Hey! I'm Xavier ([/ɡzavje/](http://en.wikipedia.org/wiki/Help:IPA_for_French)) and I'm a Software Developer! I work primarily in Ruby and Javascript but also tinker using Clojure and Go.
 
-I'm currently living in Paris, France, working for [KissKissBankBank](http://www.kisskissbankbank.com).
-
-I'll be moving to Vancouver, BC in early September 2014 and I'm currently looking for developer opportunities out there. Interested? Shoot me an email at contact@xavier-perez.com !
+I've recently relocated from to Vancouver BC from Paris and I'm currently looking for developer opportunities out there. Interested? Shoot me an email at contact@xavier-perez.com ! 
 
 Some places where you can find me:
 
